@@ -115,12 +115,12 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def get_prediction(self):
-        sex = self.comboBox.currentText()
+        veg = self.comboBox.currentText()
         a = self.lineEdit.text()
         b = self.lineEdit_2.text()
         print('a = ', a)
         print('b = ', b)
-        print('sex: ', sex)
+        print('Vegitation: ', veg)
         self.lineEdit_3.setText('fire')
 
     def retranslateUi(self, MainWindow):
@@ -131,11 +131,11 @@ class Ui_MainWindow(object):
         self.knn_Button.setText(_translate("MainWindow", "KNN"))
         self.SVM_Button.setText(_translate("MainWindow", "SVM"))
         self.NN_Button.setText(_translate("MainWindow", "NN"))
-        self.label_3.setText(_translate("MainWindow", "Sex"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Male"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "Female"))
-        self.label_4.setText(_translate("MainWindow", "Age"))
-        self.label_5.setText(_translate("MainWindow", "Other Feature"))
+        self.label_3.setText(_translate("MainWindow", "Vegitation"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "Brush"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "Forest"))
+        self.label_4.setText(_translate("MainWindow", "Temp"))
+        self.label_5.setText(_translate("MainWindow", "Wind Speed"))
         self.pushButton.setText(_translate("MainWindow", "Predict"))
         self.label_2.setText(_translate("MainWindow", "Prediction result"))
 
