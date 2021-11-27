@@ -18,6 +18,7 @@ import datetime
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import RepeatedStratifiedKFold
+import joblib
 
 # Read in data and display first 5 rows
 features = pd.read_csv('Train&TestData.csv')
@@ -60,7 +61,7 @@ train_features, test_features, train_labels, test_labels = train_test_split(feat
 # baseline_errors = abs(baseline_preds - test_labels)
 # print('Average baseline error: ', round(np.mean(baseline_errors), 2))
 
-# From link above
+# Instantiate model with 20 decision trees
 rf = RandomForestClassifier(n_estimators=20)
 # evaluate the model
 cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=1)
@@ -68,26 +69,10 @@ n_scores = cross_val_score(rf, features, labels, scoring='accuracy', cv=cv, n_jo
 # report performance
 print('Accuracy: %.3f (%.3f)' % (np.mean(n_scores), np.std(n_scores)))
 
-# Instantiate model with 10 decision trees
-rf = RandomForestClassifier(n_estimators=10)
 # Train the model on training data
-rf.fit(train_features, train_labels);
+rf.fit(train_features, train_labels)
 
-# # Use the forest's predict method on the test data
-# predictions = rf.predict(test_features)
-# # Calculate the absolute errors
-# errors = abs(predictions - test_labels)
-# # Print out the mean absolute error (mae)
-
-
-# print('Mean Absolute Error:', round(np.mean(errors), 2), 'degrees.')
-#
-# # Calculate mean absolute percentage error (MAPE)
-# mape = 100 * (errors / test_labels)
-# # Calculate and display accuracy
-# accuracy = 100 - np.mean(mape)
-# print('Accuracy:', round(accuracy, 2), '%.')
-
+joblib.dump(rf, "my_random_forest.joblib")
 
 # Pull out one tree from the forest
 tree = rf.estimators_[5]
@@ -151,18 +136,18 @@ feature_importances = sorted(feature_importances, key = lambda x: x[1], reverse 
 #
 #
 # # Dates of training values
-# months = features[:, feature_list.index('month')]
-# days = features[:, feature_list.index('day')]
-# years = features[:, feature_list.index('year')]
+# months = features[:, feature_list.index('Month')]
+# days = features[:, feature_list.index('Day')]
+# years = features[:, feature_list.index('Year')]
 # # List and then convert to datetime object
 # dates = [str(int(year)) + '-' + str(int(month)) + '-' + str(int(day)) for year, month, day in zip(years, months, days)]
 # dates = [datetime.datetime.strptime(date, '%Y-%m-%d') for date in dates]
 # # Dataframe with true values and dates
 # true_data = pd.DataFrame(data = {'date': dates, 'actual': labels})
 # # Dates of predictions
-# months = test_features[:, feature_list.index('month')]
-# days = test_features[:, feature_list.index('day')]
-# years = test_features[:, feature_list.index('year')]
+# months = test_features[:, feature_list.index('Month')]
+# days = test_features[:, feature_list.index('Day')]
+# years = test_features[:, feature_list.index('Year')]
 # # Column of dates
 # test_dates = [str(int(year)) + '-' + str(int(month)) + '-' + str(int(day)) for year, month, day in zip(years, months, days)]
 # # Convert to datetime objects
