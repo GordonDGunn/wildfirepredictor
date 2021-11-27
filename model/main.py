@@ -20,7 +20,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import RepeatedStratifiedKFold
 
 # Read in data and display first 5 rows
-features = pd.read_csv('SaddleRidge.csv')
+features = pd.read_csv('Train&TestData.csv')
 # print(features.head(5))
 # print('The shape of our features is:', features.shape)
 
@@ -49,10 +49,10 @@ features = np.array(features)
 # Split the data into training and testing sets
 train_features, test_features, train_labels, test_labels = train_test_split(features, labels)
 
-print('Training Features Shape:', train_features.shape)
-print('Training Labels Shape:', train_labels.shape)
-print('Testing Features Shape:', test_features.shape)
-print('Testing Labels Shape:', test_labels.shape)
+# print('Training Features Shape:', train_features.shape)
+# print('Training Labels Shape:', train_labels.shape)
+# print('Testing Features Shape:', test_features.shape)
+# print('Testing Labels Shape:', test_labels.shape)
 
 # # The baseline predictions are the historical averages
 # baseline_preds = test_features[:, feature_list.index('AvgRisk')]
@@ -61,7 +61,7 @@ print('Testing Labels Shape:', test_labels.shape)
 # print('Average baseline error: ', round(np.mean(baseline_errors), 2))
 
 # From link above
-rf = RandomForestClassifier(n_estimators=10)
+rf = RandomForestClassifier(n_estimators=20)
 # evaluate the model
 cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=1)
 n_scores = cross_val_score(rf, features, labels, scoring='accuracy', cv=cv, n_jobs=-1, error_score='raise')
