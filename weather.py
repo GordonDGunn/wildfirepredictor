@@ -2,7 +2,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
-from MainWindow import Ui_MainWindow
+from mainwindowR1 import Ui_MainWindow
 
 from datetime import datetime
 import json
@@ -81,11 +81,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         self.pushButton.pressed.connect(self.update_weather)
-
+        self.predict_button.pressed.connect(self.predict_fire)
         self.threadpool = QThreadPool()
 
         self.show()
-
+    def predict_fire(self):
+        #joblib.load("my_random_forest.joblib")
+        #X = ()
+        #y = loaded_rf.predict(X)
+        self.prediction_result.setText("1")
 
     def alert(self, message):
         alert = QMessageBox.warning(self, "Warning", message)
