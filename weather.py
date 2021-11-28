@@ -1,15 +1,16 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-
+import pandas as pd
 from mainwindowR1 import Ui_MainWindow
-
+import csv
 from datetime import datetime
 import json
 import os
 import sys
 import requests
 from urllib.parse import urlencode
+import joblib
 
 #OPENWEATHERMAP_API_KEY = os.environ.get('OPENWEATHERMAP_API_KEY')
 OPENWEATHERMAP_API_KEY = '98795ad55f09f1b49999633f67d0583c'
@@ -56,6 +57,11 @@ class WeatherWorker(QRunnable):
             url = 'http://api.openweathermap.org/data/2.5/weather?%s&units=metric' % urlencode(params)
             r = requests.get(url)
             weather = json.loads(r.text)
+            print(weather)
+
+            #df = pd.json_normalize(weather['main'])
+            df = pd.json_normalize(weather)
+            df.to_csv("samplecsv.csv")
 
             # Check if we had a failure (the forecast will fail in the same way).
             if weather['cod'] != 200:
@@ -86,10 +92,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.show()
     def predict_fire(self):
-        #joblib.load("my_random_forest.joblib")
-        #X = ()
-        #y = loaded_rf.predict(X)
-        self.prediction_result.setText("1")
+        loaded_rf = joblib.load("my_random_forest.joblib")
+        #x = pd.read_csv('PredictionData.csv') #this is an LA risky day from 2019
+        x = pd.read_csv('samplecsv.csv')       #this is generated from the weather api
+        y = loaded_rf.predict(x)
+        print(y)
+        self.prediction_result.setText(str(y))
 
     def alert(self, message):
         alert = QMessageBox.warning(self, "Warning", message)
@@ -117,6 +125,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             weather['weather'][0]['description']
         )
                                   )
+
 
         self.set_weather_icon(self.weatherIcon, weather['weather'])
 
