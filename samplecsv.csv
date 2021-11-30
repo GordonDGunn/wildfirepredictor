@@ -1,2 +1,2 @@
-,weather,base,visibility,dt,timezone,id,name,cod,coord.lon,coord.lat,main.temp,main.feels_like,main.temp_min,main.temp_max,main.pressure,main.humidity,wind.speed,wind.deg,clouds.all,sys.type,sys.id,sys.country,sys.sunrise,sys.sunset
-0,"[{'id': 800, 'main': 'Clear', 'description': 'clear sky', 'icon': '01d'}]",stations,10000,1638133967,-28800,5391811,San Diego,200,-117.1573,32.7153,25.56,24.72,21.45,30.6,1020,21,3.09,310,1,1,5771,US,1638109852,1638146580
+,weather,base,visibility,dt,timezone,id,name,cod,coord.lon,coord.lat,main.temp,main.feels_like,main.temp_min,main.temp_max,main.pressure,main.humidity,wind.speed,wind.deg,wind.gust,clouds.all,sys.type,sys.id,sys.country,sys.sunrise,sys.sunset
+0,"[{'id': 800, 'main': 'Clear', 'description': 'clear sky', 'icon': '01n'}]",stations,10000,1638237296,-28800,5331835,Burbank,200,-118.309,34.1808,19.8,18.78,14.22,24.21,1016,36,1.03,15,1.5,0,2,46004,US,1638196782,1638233045

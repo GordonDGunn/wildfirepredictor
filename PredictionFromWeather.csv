@@ -1,0 +1,2 @@
+Year,Month,Day,TempMax,TempAvg,TempMin,DewPointMax,DewpointAvg,DewpointMin,HumidityMax,HumidityAvg,HumidityMin,WindspeedMax,WindSpeedAvg,WindspeedMin,PressureMax,PressureAvg,PressureMin,TotalPrecipitation,City
+2021,11,29,75.578,66.587,57.596000000000004,50,40,40,56,36,16,6.03,1.03,0,30.004517952216013,30.001565042270908,29.9986121323258,0,1

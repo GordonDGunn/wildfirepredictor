@@ -11,6 +11,7 @@ import sys
 import requests
 from urllib.parse import urlencode
 import joblib
+from datetime import date
 
 #OPENWEATHERMAP_API_KEY = os.environ.get('OPENWEATHERMAP_API_KEY')
 OPENWEATHERMAP_API_KEY = '98795ad55f09f1b49999633f67d0583c'
@@ -56,6 +57,11 @@ class WeatherWorker(QRunnable):
 
             url = 'http://api.openweathermap.org/data/2.5/weather?%s&units=metric' % urlencode(params)
             r = requests.get(url)
+
+            global weather
+            global locationGlobal
+            locationGlobal = self.location
+
             weather = json.loads(r.text)
             print(weather)
 
@@ -93,11 +99,53 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.show()
     def predict_fire(self):
         loaded_rf = joblib.load("my_random_forest.joblib")
-        #x = pd.read_csv('PredictionData.csv') #this is an LA risky day from 2019
-        x = pd.read_csv('samplecsv.csv')       #this is generated from the weather api
+
+        # this is an LA risky day from 2019 that should produce a [1] for fire risk if uncommented
+        #x = pd.read_csv('FireRisk_2019.csv')
+
+        #going to try another method of writing a csv file with manual entry of column headers and weather data
+
+        today = date.today()
+        # Textual month, day and year
+        d2 = today.strftime("%B %d, %Y")
+        print("d2 =", d2)
+
+        if locationGlobal == 'Burbank':
+            city = 1
+        elif locationGlobal == 'San Diego':
+            city = 2
+        elif locationGlobal == 'Santa Barbara':
+            city = 3
+        elif locationGlobal == 'Riverside':
+            city = 4
+        else:
+            city = 0
+
+        header = ['Year', 'Month', 'Day', 'TempMax', 'TempAvg', 'TempMin', 'DewPointMax', 'DewpointAvg', 'DewpointMin',
+                  'HumidityMax', 'HumidityAvg', 'HumidityMin', 'WindspeedMax', 'WindSpeedAvg', 'WindspeedMin',
+                  'PressureMax', 'PressureAvg', 'PressureMin', 'TotalPrecipitation', 'City']
+        data = [today.year, today.month, today.day, weather['main']['temp_max']*9/5+32,
+                ((weather['main']['temp_max']*9/5+32)+(weather['main']['temp_min']*9/5+32))/2,
+                weather['main']['temp_min']*9/5+32, 50, 40, 40, weather['main']['humidity']+20,
+                weather['main']['humidity'], weather['main']['humidity']-20, weather['wind']['speed']+5,
+                weather['wind']['speed'], 0, (weather['main']['pressure']+.1)/33.8649,
+                weather['main']['pressure']/33.8649, (weather['main']['pressure']-.1)/33.8649, 0, city]
+
+        with open('PredictionFromWeather.csv', 'w', encoding='UTF8', newline='') as f:
+            writer = csv.writer(f)
+
+            #write the header
+            writer.writerow(header)
+
+            #write the data
+            writer.writerow(data)
+
+        x = pd.read_csv('PredictionFromWeather.csv')
         y = loaded_rf.predict(x)
+
         print(y)
         self.prediction_result.setText(str(y))
+        print(locationGlobal)
 
     def alert(self, message):
         alert = QMessageBox.warning(self, "Warning", message)
